@@ -44,3 +44,7 @@ def format_email_markdown(subject, author, to, email_thread, email_id=None):
 
 ---
 """
+
+def triage_eval(run, example):
+  correctness = example["outputs"]["triage"].lower() == run["outputs"]["output"]["content"].lower()
+  return { "correctness": correctness }
