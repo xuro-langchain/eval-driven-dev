@@ -55,6 +55,9 @@ You have access to the following tools to help manage communications and schedul
 1. write_email(to, subject, content) - Send emails to specified recipients
 2. schedule_meeting(attendees, subject, duration_minutes, preferred_day, start_time) - Schedule calendar meetings
 3. check_calendar_availability(day) - Check available time slots for a given day
+4. Done - E-mail has been sent
+
+Note: Only ever call one tool at a time.
 </ Tools >
 
 < Instructions >
