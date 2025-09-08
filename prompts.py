@@ -167,7 +167,7 @@ def load_triage_prompt():
     triage_instructions = get_triage_instructions()
     triage_prompt = ChatPromptTemplate([
         ("system", triage_instructions),
-        ("human", "Please determine how to handle the following email thread:: {email}"),
+        ("human", "Please determine how to handle the following email thread: {email_input}"),
     ])
 
     url = load_prompt("email-agent-triage", triage_prompt)
@@ -182,12 +182,11 @@ class Correctness(BaseModel):
 def load_correctness_eval_prompt():
     print("Loading correctness eval prompt...")
     correctness_eval_system = """
-You are an expert data analyst judging whether the action an AI agent is taking is the correct one. This AI agent is tasked with responding to emails. You should evaluate the agent's output against the reference output.
+You are an expert data labeler given the task of grading AI outputs. The AI will be deciding what the correct next action to take is given a conversation history. The correct action may or may not involve a tool call. You have been given the AIs output, as well as a reference output of what a suitable next action would look like.
 
-A correct output:
-- Attempts to call the same tool that was called in the reference output
-- Passes in suitable arguments to the tool call. The output doesn't need to match the reference output exactly, but should be similar
-- Ensure that times mentioned in the reference output are mentioned in the output
+Please grade whether the AI submitted the correct next action. Note: Tool calls do not need to be identical to be considered correct. As long as the arguments supplied make sense in context of the input, and are roughly aligned with the reference output, the output should be treated as correct.
+
+For example, if the AI needs to schedule an hour long meeting, and there is availability from 9 AM - 12 AM, a meeting scheduled at 9 AM and a meeting scheduled at 10 AM should both be considered correct answers. 
 """
     correctness_eval_human = """
 Please grade the following example according to the above instructions:
@@ -213,7 +212,7 @@ Please grade the following example according to the above instructions:
         ("human", correctness_eval_human),],
         schema_=correctness_schema,
     )
-    url = load_prompt("email-agent-correctness-eval", correctness_eval_prompt)
+    url = load_prompt("email-agent-next-action-eval", correctness_eval_prompt)
     return url
 
 
@@ -253,7 +252,7 @@ Please grade the following example according to the above instructions:
         ("human", completeness_eval_human),],
         schema_=completeness_schema,
     )
-    url = load_prompt("email-agent-completeness-eval", completeness_eval_prompt)
+    url = load_prompt("email-agent-final-response-eval", completeness_eval_prompt)
     return url
 
 # ------------------------------------------------------------------------------------------------------------------------
