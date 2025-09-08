@@ -57,7 +57,7 @@ You have access to the following tools to help manage communications and schedul
 3. check_calendar_availability(day) - Check available time slots for a given day
 4. Done - E-mail has been sent
 
-Note: Only ever call one tool at a time.
+Note: FOR EACH INPUT, ONLY EVER CALL ONE TOOL
 </ Tools >
 
 < Instructions >
